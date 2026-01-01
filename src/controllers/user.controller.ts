@@ -44,3 +44,41 @@ export const getOne = async (req: any, res: any) => {
     res.status(500).json({ error: 'Failed to fetch user' });
   }
 };
+
+export const update = async (req: any, res: any) => {
+  const id = parseInt(req.params.id);
+  if (isNaN(id)) {
+    return res.status(400).json({ error: 'Invalid ID format' });
+  }
+
+  try {
+    const { name, email } = req.body;
+
+    if (!name && !email) {
+      return res.status(400).json({ error: 'At least one field is required' });
+    }
+
+    const user = await userService.updateUser(id, { name, email });
+    res.status(200).json(user);
+  } catch (error: any) {
+    console.error('Update user error:', error);
+    if (error.code === 'P2002') {
+      return res.status(400).json({ error: 'Email already exists' });
+    }
+    res.status(500).json({ error: 'Failed to update user' });
+  }
+};
+
+export const remove = async (req: any, res: any) => {
+  const id = parseInt(req.params.id);
+  if (isNaN(id)) {
+    return res.status(400).json({ error: 'Invalid ID format' });
+  }
+
+  try {
+    await userService.deleteUser(id);
+    res.status(200).json({ message: 'User deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to delete user' });
+  }
+};
