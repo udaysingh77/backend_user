@@ -20,10 +20,11 @@ export const create = async (req: any, res: any) => {
     const user = await userService.createUser({ name, email });
     res.status(201).json(user);
   } catch (error: any) {
+    console.error('Create user error:', error);
     if (error.code === 'P2002') {
       return res.status(400).json({ error: 'Email already exists' });
     }
-    res.status(500).json({ error: 'Failed to create user' });
+    res.status(500).json({ error: 'Failed to create user', details: error.message });
   }
 };
 

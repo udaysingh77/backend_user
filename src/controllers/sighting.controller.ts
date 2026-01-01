@@ -36,20 +36,21 @@ export const create = async (req: any, res: any) => {
 
     const sighting = await sightingService.createSighting({
       description,
-      dateTime,
+      dateTime: new Date(dateTime), // 🔥 FIX HERE
       location,
-      userId,
+      userId: Number(userId),
     });
 
     res.status(201).json(sighting);
   } catch (error: any) {
-    // Check for Prisma foreign key constraint failure
     if (error.code === 'P2003') {
-        return res.status(400).json({ error: 'Invalid User ID' });
+      return res.status(400).json({ error: 'Invalid User ID' });
     }
+    console.error(error); // 👈 ADD THIS
     res.status(500).json({ error: 'Failed to create sighting' });
   }
 };
+
 
 export const update = async (req: any, res: any) => {
   const id = parseInt(req.params.id);

@@ -18,6 +18,7 @@ export interface Sighting {
 export const api = {
   getUsers: async (): Promise<User[]> => {
     const res = await fetch(`${API_URL}/users`);
+    if (!res.ok) throw new Error(await res.text());
     return res.json();
   },
 
@@ -33,6 +34,7 @@ export const api = {
 
   getSightings: async (): Promise<Sighting[]> => {
     const res = await fetch(`${API_URL}/sightings`);
+    if (!res.ok) throw new Error(await res.text());
     return res.json();
   },
 
