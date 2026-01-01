@@ -1,0 +1,5 @@
+{
+  "name": "observation-sighting-api",
+  "description": "A REST API backend for an observation system to record and manage sightings using Node.js, Express, Prisma, and SQLite.",
+  "requestFramePermissions": []
+}
